@@ -86,6 +86,7 @@ class ContactoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(null)->recordAction('edit')
             ->columns([
                 Tables\Columns\TextColumn::make('nombre_completo')
                     ->searchable()
@@ -99,7 +100,8 @@ class ContactoResource extends Resource
                 Tables\Columns\TextColumn::make('barrio.nombre') // Accede al nombre del barrio a través de la relación
                     ->label('Barrio')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->tooltip(fn (Contacto $record): string => "Dirección: {$record->direccion}"), // <--- MAGIA AQUÍ,
                 Tables\Columns\TextColumn::make('asesor.name') // Accede al nombre del asesor a través de la relación
                     ->label('Asesor')
                     ->sortable()
@@ -126,6 +128,35 @@ class ContactoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('tipo_telefono_filtro')
+                ->label('Filtrar por Teléfono')
+                ->options([
+                    'solo_celular' => 'Solo Celular',
+                    'solo_fijo' => 'Solo Teléfono',
+                    'ambos' => 'Tiene Celular y Fijo',
+                    'ninguno_registrado' => 'Ninguno Registrado', // Opcional
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    $value = $data['value']; // El valor de la opción seleccionada
+
+                    if ($value === 'solo_celular') {
+                        return $query->whereNotNull('celular')->whereNull('telefono_fijo');
+                    }
+
+                    if ($value === 'solo_fijo') {
+                        return $query->whereNotNull('telefono_fijo')->whereNull('celular');
+                    }
+
+                    if ($value === 'ambos') {
+                        return $query->whereNotNull('celular')->whereNotNull('telefono_fijo');
+                    }
+
+                    if ($value === 'ninguno_registrado') {
+                        return $query->whereNull('celular')->whereNull('telefono_fijo')->whereNull('telefono_opcional');
+                    }
+
+                    return $query;
+                }),
                 Tables\Filters\SelectFilter::make('id_barrio')
                     ->label('Barrio')
                     ->relationship('barrio', 'nombre'), // Filtra por la relación
@@ -148,7 +179,11 @@ class ContactoResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->url(null) // <--- AÑADE ESTO
+                ->slideOver() // <--- ¡ESTA ES LA MAGIA PARA EL SLIDE-OVER!
+                ->modalWidth('xl') // O 'lg', 'xl', etc. para el ancho del panel lateral
+                ->modalHeading('Editar Contacto'), // Título opcional
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
