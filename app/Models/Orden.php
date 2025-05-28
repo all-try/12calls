@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Orden extends Model
 {
     use HasFactory;
+    protected $table = 'ordenes';
 
     protected $fillable = [
         'numero_orden',
