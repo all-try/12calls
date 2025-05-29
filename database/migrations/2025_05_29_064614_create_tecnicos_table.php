@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->string('apellido', 100);
             $table->string('telefono', 20);
+            $table->string('foto_cedula_url', 255)->nullable();
             $table->boolean('activo')->default(true);
             $table->timestamps();
 

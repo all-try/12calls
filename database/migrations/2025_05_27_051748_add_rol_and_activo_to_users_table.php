@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Asumimos que 'password' es una columna existente.
-            // Ajusta los roles según tus necesidades.
+            // Asume que 'password' es una columna existente en la tabla users
             $table->enum('rol', ['SUPER_ADMIN', 'ADMIN', 'ASESOR'])->default('ASESOR')->after('password');
             $table->boolean('activo')->default(true)->after('rol');
         });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_liquidacion_orden')->constrained('liquidaciones_ordenes')->onDelete('cascade');
             $table->string('nombre_repuesto', 255);
-            $table->integer('cantidad')->default(1);
+            $table->unsignedInteger('cantidad')->default(1);
             $table->decimal('precio_unitario_compra', 10, 2);
             $table->timestamps();
         });

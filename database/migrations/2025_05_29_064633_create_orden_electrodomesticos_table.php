@@ -22,9 +22,6 @@ return new class extends Migration
             $table->text('diagnostico_tecnico_item')->nullable();
             $table->text('trabajo_realizado_item')->nullable();
             $table->timestamps();
-
-            // Un índice compuesto puede ser útil aquí si se consulta mucho por ambos
-            // $table->index(['id_orden', 'id_electrodomestico']);
         });
     }
 

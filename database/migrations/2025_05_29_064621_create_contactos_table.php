@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('telefono_opcional', 20)->nullable();
             $table->enum('tipo_cliente', [
                 'INTERESA', 'NO_INTERESA', 'TIENE_TECNICO', 'FUERA_DE_MEDELLIN',
-                'MALO', 'INACTIVO', 'INVITAR_NUEVAMENTE', 'REPROGRAMAR', 'VENTA', 'INICIAL'
+                'MALO', 'INACTIVO', 'INVITAR_NUEVAMENTE', 'VENTA', 'INICIAL',
+                'NUMERO_EQUIVOCADO', 'NO_VOLVER_A_LLAMAR' // Estados añadidos/revisados
             ])->default('INICIAL');
             $table->foreignId('id_asesor')->nullable()->constrained('users')->onDelete('set null');
             $table->text('observaciones_cliente')->nullable();

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('electrodomesticos', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
             $table->string('nombre', 100)->unique();
-            $table->timestamps(); // Esto crea created_at y updated_at
+            $table->timestamps(); // created_at y updated_at (TIMESTAMP NULL)
         });
     }
 

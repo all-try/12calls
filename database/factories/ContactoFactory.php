@@ -28,7 +28,8 @@ class ContactoFactory extends Factory
     {
         $tiposCliente = [
             'INTERESA', 'NO_INTERESA', 'TIENE_TECNICO', 'FUERA_DE_MEDELLIN',
-            'MALO', 'INACTIVO', 'INVITAR_NUEVAMENTE', 'REPROGRAMAR', 'VENTA', 'INICIAL'
+            'MALO', 'INACTIVO', 'INVITAR_NUEVAMENTE', 'REPROGRAMAR', // <--- ¡AQUÍ ESTÁ EL PROBLEMA!
+            'VENTA', 'INICIAL', 'NUMERO_EQUIVOCADO', 'NO_VOLVER_A_LLAMAR'
         ];
 
         // Asegúrate de que existan barrios y asesores, o créalos si no.

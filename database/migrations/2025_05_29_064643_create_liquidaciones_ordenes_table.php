@@ -15,25 +15,30 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_orden')->unique()->constrained('ordenes')->onDelete('restrict');
             $table->foreignId('id_tecnico_liquida')->constrained('tecnicos')->onDelete('restrict');
-            $table->dateTime('fecha_liquidacion')->useCurrent(); // Usa la fecha actual por defecto
+            $table->foreignId('id_usuario_registro_liquidacion')->constrained('users')->onDelete('restrict');
+            
+            $table->dateTime('fecha_liquidacion_registrada')->useCurrent();
+            
             $table->decimal('monto_cobrado_efectivo', 12, 2)->default(0.00);
             $table->decimal('monto_cobrado_transferencia', 12, 2)->default(0.00);
             $table->string('referencia_transferencia', 100)->nullable();
             $table->text('observaciones_cobro')->nullable();
+            
             $table->decimal('monto_total_repuestos', 12, 2)->default(0.00);
             $table->decimal('monto_otros_gastos', 12, 2)->default(0.00);
             $table->text('descripcion_otros_gastos')->nullable();
-            $table->decimal('saldo_neto_liquidacion', 12, 2); // Se calcula en la aplicación
-            $table->enum('estado_liquidacion', [
-                'PENDIENTE_ENTREGA','ENTREGADA_PENDIENTE_REVISION',
-                'APROBADA', 'RECHAZADA_AJUSTES', 'CERRADA'
-            ])->default('PENDIENTE_ENTREGA');
-            $table->text('observaciones_internas_liquidacion')->nullable();
-            $table->foreignId('id_usuario_revisa')->nullable()->constrained('users')->onDelete('set null');
-            $table->timestamp('fecha_revision')->nullable();
+            
+            $table->decimal('monto_total_ingresos_cliente', 12, 2);
+            $table->decimal('monto_total_gastos_tecnico', 12, 2);
+            $table->decimal('saldo_neto_liquidacion', 12, 2);
+            $table->decimal('monto_para_tecnico', 12, 2);
+            $table->decimal('monto_para_empresa', 12, 2);
+            
+            $table->text('observaciones_generales_liquidacion')->nullable();
             $table->timestamps();
 
-            $table->index('estado_liquidacion');
+            $table->index('id_tecnico_liquida');
+            // No hay estado_liquidacion en esta tabla según la última decisión
         });
     }
 
